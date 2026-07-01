@@ -1,0 +1,9 @@
+defaults:
+  - /sae: base
+
+### TopK SAE
+sparsifier_kind: "topk"
+sparsifier_params: {
+  topk: 32
+}
+lmbda: 0.0

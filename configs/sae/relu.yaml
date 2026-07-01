@@ -1,0 +1,8 @@
+defaults:
+  - /sae: base
+
+### ReLU SAE
+sparsifier_kind: "relu"
+sparsifier_params: {}
+sparsity_penalty_type: "l1"
+lmbda: 0.001

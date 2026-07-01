@@ -1,0 +1,6 @@
+defaults:
+  - common
+  - data: single_dataset/mvtec
+  - mode: train
+  - _self_
+  - optional experiment: none

@@ -1,0 +1,5 @@
+path: ${oc.env:DATASET_ROOT}
+
+# input_type: image
+input_type: feature
+shuffle: true

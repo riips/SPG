@@ -1,0 +1,11 @@
+defaults:
+  - base
+  - _self_
+
+encoder: SigLIP
+id: google/siglip-large-patch16-384
+id_wo_slash: google_siglip-large-patch16-384
+_name: google_siglip-large-patch16-384
+root: ./.cache/siglip
+features_list: [24]
+image_size: 384

@@ -1,0 +1,50 @@
+# @package _global_
+
+model: 
+  method: guide_sae
+  method_config:
+    separate_loss_weight: 0.0
+    separate_loss_mask: "normal_ratio"
+    separate_loss_zero_eps: 1e-6
+    anomaly_map_scale: 1.0
+    anomaly_map_shift: 0.0
+    sparsity_lmbda: 0.001
+    guide_sae:
+      # Base directory that contains SAE training and Guide runs.
+      # Override this to match your environment (e.g. "${REPO_ROOT}/outputs").
+      outputs_dir: "${oc.env:REPO_ROOT}/outputs"
+      datetime: "2026-02-03/20-36-06"
+      run_tag: "none"
+      model_name: "facebook_dinov3-vitl16"
+      checkpoint_epoch: 50
+      apply_dead_mask: true
+      detection_aggregation: "first_token"  # or "mean_tokens" to use mean of non-first tokens
+      sparsity_type: "l1"
+      guide_topk: 32
+    sae:
+      - &sae_base
+        name: "layer_24"
+        hidden_dim: 4096
+        sparsifier_kind: "topk"
+        sparsifier_params: { topk: 32 }
+        sparsity_penalty_type: "l1"
+        lmbda: 0.0
+        recon_error_type: "mse"
+        clamp_dict_nonneg: false
+        input_norm: none
+        use_cls: false
+        encoder_bias_enabled: false
+        tied_init: true
+        # AuxK (None disables it)
+        auxk: 512
+        auxk_coef: 0.03125
+        dead_steps_threshold: 10000000
+        dead_activation_threshold: 0.001
+
+  temperature: 0.07
+
+  optional_modules:
+    weight_module:
+      dynamic: false
+      num_layers: 4
+      use_bias: true

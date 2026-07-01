@@ -1,0 +1,8 @@
+defaults:
+  - base
+  - _self_
+
+dataset_name: mvtec
+root: ${data.path}/mvtec_anomaly_detection
+
+combined_datasets:

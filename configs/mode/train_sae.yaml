@@ -1,0 +1,61 @@
+# @package _global_
+
+defaults:
+  - /model: facebook_dinov3-vitl16
+  - _self_
+
+mode: train_sae
+
+# ---- Hydra output directory settings ----
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}_${model.method}_${model.id_wo_slash}
+
+# ---- Common paths ----
+save_dir: ${hydra:run.dir}/checkpoints/
+
+# ---- Train-specific settings ----
+train:
+  epoch: 50
+  learning_rate: 0.001
+  batch_size: 16
+  scheduler: 
+    # type: CosineAnnealingLR
+    # params: 
+    #   T_max: ${train.epoch}
+    #   eta_min: 1e-6
+
+sae:
+  - &sae_base
+    name: "layer_24"
+    hidden_dim: 4096
+
+    sparsifier_kind: "topk"
+    sparsifier_params: {
+      topk: 32
+    }
+    sparsity_penalty_type: "l1"
+    lmbda: 0.0
+
+    recon_error_type: "mse"
+    clamp_dict_nonneg: false
+    input_norm: none
+    # Whether to include the CLS token in SAE inputs; when false, drop CLS and use only patch tokens.
+    use_cls: false
+
+    encoder_bias_enabled: false
+
+    dead_atom_rule: "count_zero"
+    dead_atom_eps: 1e-6
+    dead_atom_threshold: 0.0
+
+    tied_init: true
+
+    # AuxK (None disables it)
+    auxk: 512
+    auxk_coef: 0.03125
+    dead_steps_threshold: 10000000
+    dead_activation_threshold: 0.001
+
+save_freq: 1
+print_freq: 1

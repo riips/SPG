@@ -1,0 +1,10 @@
+defaults:
+  - base
+  - _self_
+
+encoder: OpenCLIP
+id: ViT-L/14@336px
+id_wo_slash: ViT-L_14@336px
+root: ${oc.env:HOME}/.cache/clip
+features_list: [24]
+image_size: 518

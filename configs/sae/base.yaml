@@ -1,0 +1,18 @@
+hidden_dim: 4608
+
+### ReLU SAE
+# sparsifier_kind: "relu"
+# sparsifier_params: {}
+# sparsity_penalty_type: "l1"
+# lmbda: 0.001
+
+### TopK SAE
+sparsifier_kind: "topk"
+sparsifier_params: {
+  topk: 32
+}
+sparsity_penalty_type: "l1"
+lmbda: 0.0
+
+recon_error_type: "mse"
+clamp_dict_nonneg: false

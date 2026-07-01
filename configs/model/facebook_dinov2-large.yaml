@@ -1,0 +1,10 @@
+defaults:
+  - base
+  - _self_
+
+encoder: DINO
+id: facebook/dinov2-large
+id_wo_slash: facebook_dinov2-large
+root: ./.cache/dinov2
+features_list: [24]
+image_size: 224

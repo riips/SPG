@@ -1,0 +1,55 @@
+# @package _global_
+
+defaults:
+  - /data@test_data: visa
+  - _self_
+
+mode: eval
+
+train_dir: outputs/latest
+
+hydra:
+  output_subdir: .hydra_eval
+  run:
+    dir: ${train_dir}/
+
+base_dir: ${hydra:runtime.output_dir}/
+save_dir: ${hydra:runtime.output_dir}/checkpoints/
+
+visualize:
+  enabled: false
+  metric: "f1"
+  alpha: 0.5
+  boundary_color: [1.0, 0.0, 0.0]
+  boundary_mode: "thick"
+  save_inputs: false
+  save_anomaly: false
+  save_overlay: true
+
+evaluate:
+  epoch: 15
+  ckpt: epoch_${evaluate.epoch}.pth
+  batch_size: 1
+  use_ema: false
+  by_specie: false
+  pro_use_fast: false
+  save_maps: false
+  map_dtype: float32
+  maps_dir: ${base_dir}/artifacts/${test_data.dataset_name}/epoch_${evaluate.epoch}/maps
+  # Image-level score: pipeline (default), map, or hybrid (alpha * pipeline + (1-alpha) * map)
+  image_score:
+    mode: "pipeline"  # or "map" / "hybrid"
+    map_pool: "max"   # or "top_q_mean" when using map
+    top_q_percent: 10.0
+    map_pool_tau: 1.0
+    alpha: 0.5
+  metrics:
+    image_level:
+      - auroc
+      # - f1
+      - ap
+    pixel_level:
+      - auroc
+      # - f1
+      # - ap
+      - pro
